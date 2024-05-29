@@ -10,7 +10,7 @@ export default class Reservation {
   @Column({ name: "date", type: "date" })
   date: string;
 
-  @Column({ name: "description", type: "time" })
+  @Column({ name: "hour", type: "time" })
   hour: string;
 
   @PrimaryGeneratedColumn("uuid")

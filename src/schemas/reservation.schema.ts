@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const reservationResponseSchema = z.object({
   id: z.string(),
-  data: z.string(),
+  date: z.string(),
   hour: z.string(),
   reservationCode: z.string(),
   userId: z.string(),

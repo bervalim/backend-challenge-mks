@@ -57,7 +57,9 @@ export const verifyIfUserReservationForMovieExists = async (
 
   const reservation: Reservation | null = await reservationRepo.findOne({
     where: {
-      user: sub,
+      user: {
+        id: sub,
+      },
       date,
       hour,
     },
