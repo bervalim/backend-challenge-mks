@@ -10,18 +10,16 @@ import { directorRepo, genreRepo, movieRepo } from "../repositories";
 export const createMovieService = async (
   bodyRequest: TcreateMovieRequest
 ): Promise<TcreateMovieResponse> => {
-  const findGenre = await genreRepo.findOneBy({ id: bodyRequest.genreId });
+  const genre = await genreRepo.findOneBy({ id: bodyRequest.genreId });
 
-  if (!findGenre) throw new AppError("Genre not found", 404);
+  if (!genre) throw new AppError("Genre not found", 404);
 
-  const saveDirectorOnDatabase: Director = await directorRepo.save(
-    bodyRequest.director
-  );
+  const director: Director = await directorRepo.save(bodyRequest.director);
 
   const newMovie: TcreateMovieResponse = await movieRepo.save({
     ...bodyRequest,
-    findGenre,
-    saveDirectorOnDatabase,
+    genre,
+    director,
   });
 
   return newMovie;
