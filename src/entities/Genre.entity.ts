@@ -14,8 +14,12 @@ export default class Genre {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ length: 255, enum: GenreType, default: GenreType.COMEDY })
-  name: string;
+  @Column({
+    type: "enum",
+    enum: GenreType,
+    default: GenreType.COMEDY,
+  })
+  name: GenreType;
 
   @OneToMany(() => Movie, (movie) => movie.genre)
   movies: Movie[];
