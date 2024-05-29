@@ -14,3 +14,32 @@ export const createReservationRequestSchema = reservationResponseSchema.omit({
   reservationCode: true,
   userId: true,
 });
+
+export const readReservationByMovieResponseSchema = z.object({
+  id: z.string(),
+  title: z.string().max(255).min(3),
+  description: z.string(),
+  year: z.number(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  reservations: z.object({
+    date: z.string(),
+    hour: z.string(),
+    reservationCode: z.string(),
+    user: z.object({
+      id: z.string(),
+      name: z.string().max(255).min(3),
+      email: z.string().email().max(255).min(3),
+      admin: z.boolean().default(false),
+      createdAt: z.string(),
+      updatedAt: z.string(),
+      deletedAt: z.string().nullable(),
+    }),
+  }),
+  director: z.object({
+    name: z.string().max(255).min(3),
+    biograpy: z.string(),
+    nationality: z.string().max(50).min(3),
+  }),
+  genreId: z.string(),
+});
