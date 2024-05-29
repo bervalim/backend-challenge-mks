@@ -3,6 +3,7 @@ import {
   TcreateUserRequest,
   TcreateUserResponse,
   TreadUserResponse,
+  TupdateUserRequest,
 } from "../interfaces/user.interface";
 import { userRepo } from "../repositories";
 import {
@@ -23,4 +24,22 @@ export const createUserService = async (
 export const readAllUsersService = async (): Promise<TreadUserResponse> => {
   const users: User[] = await userRepo.find();
   return usersListResponseSchema.parse(users);
+};
+
+export const updateUserService = async (
+  requestBody: TupdateUserRequest,
+  user: User
+): Promise<TcreateUserResponse> => {
+  const updatedClient: User = userRepo.create({
+    ...user,
+    ...requestBody,
+  });
+
+  await userRepo.save(updatedClient);
+
+  return createUserResponseSchema.parse(updatedClient);
+};
+
+export const softDeleteUserService = async (user: User): Promise<void> => {
+  await userRepo.softRemove(user);
 };

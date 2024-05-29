@@ -18,3 +18,21 @@ export const verifyUserEmailIsUnique = async (
 
   return next();
 };
+
+export const verifyUserIdExists = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const { id } = req.params;
+
+  const findUser: User | null = await userRepo.findOneBy({
+    id: id,
+  });
+
+  if (!findUser) throw new AppError("User not found!", 404);
+
+  res.locals = { ...res.locals, findUser };
+
+  return next();
+};
