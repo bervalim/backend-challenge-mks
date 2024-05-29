@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { DeepPartial, Repository } from "typeorm";
 import Movie from "../entities/Movie.entity";
 import {
   createMovieRequestSchema,
@@ -9,5 +9,6 @@ import Director from "../entities/Director.entity";
 
 export type TcreateMovieResponse = z.infer<typeof createMovieResponseSchema>;
 export type TcreateMovieRequest = z.infer<typeof createMovieRequestSchema>;
+export type TUpdateMovieRequest = DeepPartial<TcreateMovieRequest>;
 export type TMovieRepo = Repository<Movie>;
 export type TDirectorRepo = Repository<Director>;

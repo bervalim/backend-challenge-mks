@@ -20,3 +20,5 @@ export const createMovieRequestSchema = createMovieResponseSchema.omit({
   createdAt: true,
   updatedAt: true,
 });
+
+export const updateMovieRequestSchema = createMovieRequestSchema.partial();

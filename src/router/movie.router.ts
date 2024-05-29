@@ -4,13 +4,20 @@ import {
   verifyAdmin,
   verifyToken,
 } from "../middlewares/globals.middleware";
-import { createMovieRequestSchema } from "../schemas/movie.schema";
+import {
+  createMovieRequestSchema,
+  updateMovieRequestSchema,
+} from "../schemas/movie.schema";
 import {
   createMovieController,
+  deleteMovieController,
+  readMovieController,
   readMoviesController,
+  updateMovieController,
 } from "../controllers/movie.controller";
 import {
   verifyIfMovieReleaseYearIsInTheFuture,
+  verifyMovieIdExists,
   verifyMovieTitleIsUnique,
 } from "../middlewares/movie.middleware";
 
@@ -26,3 +33,24 @@ movieRouter.post(
   createMovieController
 );
 movieRouter.get("/", verifyToken, readMoviesController);
+
+movieRouter.get("/:id", verifyToken, verifyMovieIdExists, readMovieController);
+
+movieRouter.patch(
+  "/:id",
+  validateBody(updateMovieRequestSchema),
+  verifyToken,
+  verifyAdmin,
+  verifyMovieIdExists,
+  verifyMovieTitleIsUnique,
+  verifyIfMovieReleaseYearIsInTheFuture,
+  updateMovieController
+);
+
+movieRouter.delete(
+  "/:id",
+  verifyToken,
+  verifyAdmin,
+  verifyMovieIdExists,
+  deleteMovieController
+);

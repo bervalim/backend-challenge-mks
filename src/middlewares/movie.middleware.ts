@@ -35,3 +35,19 @@ export const verifyIfMovieReleaseYearIsInTheFuture = async (
 
   return next();
 };
+
+export const verifyMovieIdExists = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const { id } = req.params;
+
+  const findMovie: Movie | null = await movieRepo.findOneBy({
+    id: id,
+  });
+
+  if (!findMovie) throw new AppError("Movie not found!", 404);
+
+  return next();
+};
