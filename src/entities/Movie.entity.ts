@@ -24,6 +24,9 @@ export default class Movie {
   @Column({ name: "description", type: "text", nullable: true })
   description: string;
 
+  @Column({ type: "integer", nullable: false })
+  year: number;
+
   @CreateDateColumn({ type: "date" })
   createdAt: string;
 
