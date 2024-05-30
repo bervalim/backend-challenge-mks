@@ -827,6 +827,350 @@
             "JWT": ["create:movie"]
           }
         ]
+      },
+      "get": {
+        "description": "Rota responsável por listar todos os  filmes",
+        "tags": ["Rotas sem parâmetros"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                },
+                "examples": {
+                  "response": {
+                    "value": [
+                      {
+                        "id": "5490b082-d1af-4d35-8183-7fbc7912edd5",
+                        "title": "Gente Grande",
+                        "description": "Descrição de Gente Grande",
+                        "year": 2015,
+                        "createdAt": "2024-05-29",
+                        "updatedAt": "2024-05-29",
+                        "director": {
+                          "id": "37208128-42b9-4e34-914a-43ac7a05a487",
+                          "name": "Tarantino",
+                          "biograpy": "Biografia do Tarantino",
+                          "nationality": "Italia"
+                        }
+                      },
+                      {
+                        "id": "179d5fc6-9223-4b36-889b-0decf8d2b51e",
+                        "title": "Gente Grande 2",
+                        "description": "Descrição de Gente Grande",
+                        "year": 2021,
+                        "createdAt": "2024-05-29",
+                        "updatedAt": "2024-05-29",
+                        "director": {
+                          "id": "049b9219-90ee-4272-aed2-45e8983e147a",
+                          "name": "Tarantino",
+                          "biograpy": "Biografia do Tarantino",
+                          "nationality": "Italia"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingTokenError": {
+                    "value": {
+                      "message": "Missing Bearer Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": ["read:movie"]
+          }
+        ]
+      }
+    },
+    "/movie/:id": {
+      "get": {
+        "description": "Rota responsável por retornar um filme específico pelo id",
+        "tags": ["Rotas com parâmetros"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "description": "Id do filme que se deseja buscar",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "id": "133e1d59-290e-4382-939c-96e6af4e014e",
+                      "title": "Vingadores: A Era de Ultron",
+                      "description": "Descrição dos Vingadores",
+                      "year": 2015,
+                      "createdAt": "2024-05-29",
+                      "updatedAt": "2024-05-29",
+                      "director": {
+                        "id": "3466328a-a90e-4d7f-b286-c3af408659bb",
+                        "name": "Tarantino",
+                        "biograpy": "Biografia do Tarantino",
+                        "nationality": "Italia"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "NotFoundError": {
+                    "value": {
+                      "message": "Movie not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingTokenError": {
+                    "value": {
+                      "message": "Missing Bearer Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": ["read:movie"]
+          }
+        ]
+      },
+      "delete": {
+        "description": "Rota responsável por deletar o filme informado",
+        "tags": ["Rotas com parâmetros"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "description": "Id do filme que se deseja buscar",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Body content"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "NotFoundError": {
+                    "value": {
+                      "message": "Movie not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingTokenError": {
+                    "value": {
+                      "message": "Missing Bearer Token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "permissionError": {
+                    "value": {
+                      "message": "Insufficient Permissions"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": ["delete:movie"]
+          }
+        ]
+      },
+      "patch": {
+        "description": "Rota responsável por atualizar os dados do filme informado",
+        "tags": ["Rotas com parâmetros"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "description": "Id do filme que se deseja buscar",
+            "name": "id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/updateMovieRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/createClientResponse"
+                },
+                "examples": {
+                  "movie": {
+                    "value": {
+                      "id": "133e1d59-290e-4382-939c-96e6af4e014e",
+                      "title": "Vingadores Atualizado",
+                      "description": "Descrição dos Vingadores",
+                      "year": 2015,
+                      "createdAt": "2024-05-29",
+                      "updatedAt": "2024-05-30"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "emailConflictError": {
+                    "value": {
+                      "message": "This movie has already been registred"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "NotFoundError": {
+                    "value": {
+                      "message": "Movie not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingTokenError": {
+                    "value": {
+                      "message": "Missing Bearer Token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "permissionError": {
+                    "value": {
+                      "message": "Insufficient Permissions"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "bodyValidationError": {
+                    "value": {
+                      "message": {
+                        "title": ["Required"]
+                      }
+                    }
+                  },
+                  "futureReleaseError": {
+                    "value": {
+                      "message": "The movie release cannot be in the future"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": ["update:movie"]
+          }
+        ]
       }
     }
   },
@@ -1310,6 +1654,34 @@
             "type": "string"
           }
         }
+      },
+      "updateMovieRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string",
+            "format": "email",
+            "minLength": 3,
+            "maxLength": 45
+          },
+          "year": {
+            "type": "boolean"
+          },
+          "director": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          }
+        },
+        "example": {
+          "title": "Vingadores Atualizado"
+        },
+        "required": ["name", "email", "password"]
       }
     }
   },
