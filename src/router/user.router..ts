@@ -43,6 +43,7 @@ userRouter.patch(
   verifyToken,
   verifyUserIdExists,
   verifyPermission,
+  verifyUserEmailIsUnique,
   updateUserController
 );
 userRouter.delete(

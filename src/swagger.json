@@ -1,0 +1,1330 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API backend-challenge-mks",
+    "description": "Construí uma API para um sistema de cinema de condomínio, que oferece aos moradores a oportunidade de desfrutar de uma experiência cinematográfica exclusiva e confortável diretamente em seus condomínios.Com essa aplicação, os usuários podem se cadastrar facilmente, selecionar o filme que desejam assistir e escolher o horário mais conveniente para a sessão. O sistema foi projetado para proporcionar uma experiência de cinema privativa, permitindo que os moradores assistam aos seus filmes favoritos sem sair do conforto de suas casas.Essa solução inovadora transforma o espaço do condomínio em um verdadeiro cinema particular, oferecendo entretenimento de alta qualidade de maneira prática e acessível para todos os residentes..",
+    "version": "1.00"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Development env"
+    }
+  ],
+  "paths": {
+    "/user": {
+      "get": {
+        "description": "Rota responsável por buscar todos os usuários cadastrados.Apenas administradores podem acessar",
+        "tags": ["Rotas sem parâmetros"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                },
+                "examples": {
+                  "response": {
+                    "value": [
+                      {
+                        "id": "57073f42-a56f-454c-86ea-a6de4c523dd3",
+                        "name": "Bernardo",
+                        "email": "bernarddodgvalim@gmail.com",
+                        "admin": false,
+                        "createdAt": "2024-05-29",
+                        "updatedAt": "2024-05-29",
+                        "deletedAt": null
+                      },
+                      {
+                        "id": "d56b4269-6835-4d8e-83e2-21e77fd64393",
+                        "name": "Bernardo",
+                        "email": "bernarddodgvdalim@gmail.com",
+                        "admin": true,
+                        "createdAt": "2024-05-29",
+                        "updatedAt": "2024-05-29",
+                        "deletedAt": null
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingTokenError": {
+                    "value": {
+                      "message": "Missing Bearer Token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "permissionError": {
+                    "value": {
+                      "message": "Insufficient Permissions"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": ["admin"]
+          }
+        ]
+      },
+      "post": {
+        "description": "Rota responsável por cadastrar um novo usuário",
+        "tags": ["Rotas sem parâmetros"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createClient"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/createClientResponse"
+                },
+                "examples": {
+                  "user": {
+                    "value": {
+                      "id": "d56b4269-6835-4d8e-83e2-21e77fd64393",
+                      "name": "Bernardo",
+                      "email": "bernarddodgvdalim@gmail.com",
+                      "admin": true,
+                      "createdAt": "2024-05-29",
+                      "updatedAt": "2024-05-29",
+                      "deletedAt": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "emailConflictError": {
+                    "value": {
+                      "message": "This user email already exists"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "bodyValidationError": {
+                    "value": {
+                      "message": {
+                        "name": ["Required"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "security": [{}]
+      }
+    },
+    "/users/:id": {
+      "get": {
+        "description": "Rota responsável por retornar um usuário específico pelo id",
+        "tags": ["Rotas com parâmetros"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "description": "Id do usuário que se deseja buscar",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "id": "57073f42-a56f-454c-86ea-a6de4c523dd3",
+                      "name": "Bernardo",
+                      "email": "bernarddodgvalim@gmail.com",
+                      "admin": false,
+                      "createdAt": "2024-05-29",
+                      "updatedAt": "2024-05-29",
+                      "deletedAt": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "NotFoundError": {
+                    "value": {
+                      "message": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingTokenError": {
+                    "value": {
+                      "message": "Missing Bearer Token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "permissionError": {
+                    "value": {
+                      "message": "Insufficient Permissions"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": ["read:users", "admin"]
+          }
+        ]
+      },
+      "patch": {
+        "description": "Rota responsável por atualizar os dados do usuário informado",
+        "tags": ["Rotas com parâmetros"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "description": "Id do usuário que se deseja buscar",
+            "name": "id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/updateOneClient"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/createClientResponse"
+                },
+                "examples": {
+                  "user": {
+                    "value": {
+                      "id": "57073f42-a56f-454c-86ea-a6de4c523dd3",
+                      "name": "bernardoatualizado",
+                      "email": "bernarddodatualgvhalim@gmail.comh",
+                      "admin": false,
+                      "createdAt": "2024-05-29",
+                      "updatedAt": "2024-05-30",
+                      "deletedAt": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "emailConflictError": {
+                    "value": {
+                      "message": "This user email already exists"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "NotFoundError": {
+                    "value": {
+                      "message": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingTokenError": {
+                    "value": {
+                      "message": "Missing Bearer Token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "permissionError": {
+                    "value": {
+                      "message": "Insufficient Permissions"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": ["update:users"]
+          }
+        ]
+      },
+      "delete": {
+        "description": "Rota responsável por deletar os dados do usuário informado",
+        "tags": ["Rotas com parâmetros"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "description": "Id do usuário que se deseja buscar",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Body content"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "NotFoundError": {
+                    "value": {
+                      "message": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingTokenError": {
+                    "value": {
+                      "message": "Missing Bearer Token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "permissionError": {
+                    "value": {
+                      "message": "Insufficient Permissions"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": ["delete:users"]
+          }
+        ]
+      }
+    },
+    "/login": {
+      "post": {
+        "description": "Rota responsável por realizar o login dos usuários",
+        "tags": ["Rotas sem parâmetros"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/clientLogin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "logged",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/clientLoginResponse"
+                },
+                "examples": {
+                  "token": {
+                    "value": {
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQmVybmFkcm8iLCJlbWFpbCI6ImJlcm5hdWRvQGVtYWlsLmNvbSIsImlhdCI6MTcxNTkyMzczMCwiZXhwIjoxNzE1OTk1NzMwLCJzdWIiOiI5MTA5ODY4Mi1jZThhLTQ2NWUtYWY3Mi1jOGU5NmM4ZTY3NDEifQ.ffLEJ8_pt7BSrzpOl8mZAbhm6-ylB4f-t5ixUk1RCU4"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "invalidCredentialError": {
+                    "value": {
+                      "message": "Invalid Credentials"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "bodyValidationError": {
+                    "value": {
+                      "message": {
+                        "email": ["Required"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [{}]
+      }
+    },
+
+    "/genre": {
+      "get": {
+        "description": "Rota responsável por listar todos os gêneros do filme",
+        "tags": ["Rotas sem parâmetros"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                },
+                "examples": {
+                  "response": {
+                    "value": [
+                      {
+                        "id": "d0aa7610-aa6f-4ef2-a33b-34f1025a3f1f",
+                        "name": "comedy"
+                      },
+                      {
+                        "id": "99a9539e-1876-4c2e-90e5-cd59f8b9df43",
+                        "name": "drama"
+                      },
+                      {
+                        "id": "6868f4e6-dc0c-4847-8bc7-f73cbfc53df7",
+                        "name": "action"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingTokenError": {
+                    "value": {
+                      "message": "Missing Bearer Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": ["read:genre"]
+          }
+        ]
+      },
+      "post": {
+        "description": "Rota responsável por criar um genêro para um filme",
+        "tags": ["Rotas sem parâmetros"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createContact"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/createContactResponse"
+                },
+                "examples": {
+                  "genre": {
+                    "value": {
+                      "name": "action",
+                      "id": "6868f4e6-dc0c-4847-8bc7-f73cbfc53df7"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingTokenError": {
+                    "value": {
+                      "message": "Missing Bearer Token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "bodyValidationError": {
+                    "value": {
+                      "message": {
+                        "name": ["Required"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "permissionError": {
+                    "value": {
+                      "message": "Insufficient Permissions"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": ["create:users"]
+          }
+        ]
+      }
+    },
+
+    "/genre/:id/movie": {
+      "get": {
+        "description": "Rota responsável por listar todos os filmes que pertencem a um genêro",
+        "tags": ["Rotas com parâmetros"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "description": "Id do genêro relacionado aos filmes que se dejesa buscar",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "id": "d0aa7610-aa6f-4ef2-a33b-34f1025a3f1f",
+                      "name": "comedy",
+                      "movies": [
+                        {
+                          "id": "5490b082-d1af-4d35-8183-7fbc7912edd5",
+                          "title": "Gente Grande",
+                          "description": "Descrição de Gente Grande",
+                          "year": 2015,
+                          "createdAt": "2024-05-29",
+                          "updatedAt": "2024-05-29"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingTokenError": {
+                    "value": {
+                      "message": "Missing Bearer Token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "NotFoundError": {
+                    "value": {
+                      "message": "Genre not found!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": ["read:users"]
+          }
+        ]
+      }
+    },
+    "/movie": {
+      "post": {
+        "description": "Rota responsável por criar um novo filme",
+        "tags": ["Rotas sem parâmetros"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createMovieRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/createMovieResponse"
+                },
+                "examples": {
+                  "movie": {
+                    "value": {
+                      "title": "Gente Grande 3d",
+                      "description": "Descrição de Gente Grande",
+                      "year": 2021,
+                      "director": {
+                        "name": "Tarantino",
+                        "biograpy": "Biografia do Tarantino",
+                        "nationality": "Italia",
+                        "id": "67783682-b72f-4d3c-93c1-850092c9317e"
+                      },
+                      "genreId": "d0aa7610-aa6f-4ef2-a33b-34f1025a3f1f",
+                      "genre": {
+                        "id": "d0aa7610-aa6f-4ef2-a33b-34f1025a3f1f",
+                        "name": "comedy"
+                      },
+                      "id": "5ba87aef-844b-4d1f-83c6-f8ded3c29639",
+                      "createdAt": "2024-05-30",
+                      "updatedAt": "2024-05-30"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "emailConflictError": {
+                    "value": {
+                      "message": "This movie has already been registred"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "bodyValidationError": {
+                    "value": {
+                      "message": {
+                        "title": ["Required"]
+                      }
+                    }
+                  },
+                  "futureReleaseError": {
+                    "value": {
+                      "message": "The movie release cannot be in the future"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingTokenError": {
+                    "value": {
+                      "message": "Missing Bearer Token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "permissionError": {
+                    "value": {
+                      "message": "Insufficient Permissions"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "security": [
+          {
+            "JWT": ["create:movie"]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "createClient": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 3,
+            "maxLength": 45
+          },
+          "admin": {
+            "type": "boolean"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          }
+        },
+        "example": {
+          "name": "Bernardo",
+          "email": "bernarddodgvdalim@gmail.com",
+          "admin": true,
+          "password": "12345678"
+        },
+        "required": ["name", "email", "password"]
+      },
+      "createClientResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "admin": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "deletedAt": {
+            "type": "string"
+          }
+        }
+      },
+      "readOneClient": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 80
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 3,
+            "maxLength": 45
+          },
+          "admin": {
+            "type": "boolean",
+            "default": false
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 18
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "contacts": {
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "fullName": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 80
+                },
+                "email": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "format": "email",
+                      "minLength": 3,
+                      "maxLength": 45
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "email",
+                        "minLength": 3,
+                        "maxLength": 45
+                      }
+                    }
+                  ]
+                },
+                "phone": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "maxLength": 18
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "maxLength": 18
+                      }
+                    }
+                  ]
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "client_id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "readAllClients": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "fullName": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 80
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "minLength": 3,
+              "maxLength": 45
+            },
+            "admin": {
+              "type": "boolean",
+              "default": false
+            },
+            "phone": {
+              "type": "string",
+              "maxLength": 18
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      },
+      "updateOneClient": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 3,
+            "maxLength": 255
+          }
+        },
+        "example": {
+          "email": "bernarddodatualgvalim@gmail.com",
+          "name": "bernardoatualizado"
+        }
+      },
+      "clientLogin": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 3,
+            "maxLength": 45
+          },
+          "password": {
+            "type": "string",
+            "minLength": 45,
+            "maxLength": 120
+          }
+        },
+        "example": {
+          "email": "bernarddodgvdalim@gmail.com",
+          "password": "12345678"
+        },
+        "required": ["email", "password"]
+      },
+      "clientLoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 30
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "birthDate": {
+                "type": "string",
+                "format": "date"
+              },
+              "sex": {
+                "type": "string",
+                "enum": ["Male", "Female", "Other"]
+              }
+            },
+            "required": ["id", "name", "email", "birthDate", "sex"]
+          }
+        },
+        "required": ["token", "user"]
+      },
+      "createContact": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "enum": ["comedy", "drama", "action", "horror", "science_fiction"]
+          }
+        },
+        "required": ["title"]
+      },
+      "createContactResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 80
+          }
+        }
+      },
+      "readOneContact": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 80
+          },
+          "content": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 80
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "minLength": 3,
+                "maxLength": 45
+              },
+              "birthDate": {
+                "type": "boolean",
+                "default": false
+              },
+              "sex": {
+                "type": "string",
+                "maxLength": 18
+              }
+            }
+          }
+        }
+      },
+      "readAllContacts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 80
+            },
+            "content": {
+              "type": "string"
+            },
+            "author": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 80
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "user_id": {
+              "type": "string"
+            },
+            "client": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 80
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "minLength": 3,
+                  "maxLength": 45
+                },
+
+                "birthDate": {
+                  "type": "string",
+                  "maxLength": 18
+                },
+                "sex": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        }
+      },
+      "updateOneContact": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 80
+          }
+        }
+      },
+      "updateContactResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 80
+          },
+          "content": {
+            "type": "string"
+          },
+
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        }
+      },
+      "createMovieRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string",
+            "format": "email",
+            "minLength": 3,
+            "maxLength": 45
+          },
+          "year": {
+            "type": "boolean"
+          },
+          "director": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          }
+        },
+        "example": {
+          "title": "Gente Grande 3",
+          "description": "Descrição de Gente Grande",
+          "year": 2021,
+          "director": {
+            "name": "Tarantino",
+            "biograpy": "Biografia do Tarantino",
+            "nationality": "Italia"
+          },
+          "genreId": "d0aa7610-aa6f-4ef2-a33b-34f1025a3f1f"
+        },
+        "required": ["name", "email", "password"]
+      },
+      "createMovieResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 80
+          },
+          "description": {
+            "type": "string"
+          },
+
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "director": {
+            "type": "string"
+          },
+          "genre": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "JWT": [
+        "read:clients",
+        "update:clients",
+        "delete:clients",
+        "create:contacts",
+        "read:contacts",
+        "delete:contacts",
+        "update:contacts",
+        "admin"
+      ]
+    }
+  ]
+}

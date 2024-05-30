@@ -27,7 +27,7 @@ export const verifyUserIdExists = async (
   const { id } = req.params;
 
   const findUser: User | null = await userRepo.findOneBy({
-    id: id,
+    id: id.toString(),
   });
 
   if (!findUser) throw new AppError("User not found!", 404);

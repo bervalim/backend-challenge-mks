@@ -10,7 +10,9 @@
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "outDir": "./dist",
+    "resolveJsonModule": true
   },
   "include": ["src"],
   "exclude": ["node_modules"]
