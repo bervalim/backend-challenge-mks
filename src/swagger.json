@@ -1172,6 +1172,282 @@
           }
         ]
       }
+    },
+    "/reservation/movie/:id": {
+      "get": {
+        "description": "Rota responsável por listar todas as reservas do cinema privativo para cada filme",
+        "tags": ["Rotas com parâmetros"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "description": "Id do filme que se deseja buscar",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "id": "133e1d59-290e-4382-939c-96e6af4e014e",
+                      "title": "Vingadores: A Era de Ultron",
+                      "description": "Descrição dos Vingadores",
+                      "year": 2015,
+                      "createdAt": "2024-05-29",
+                      "updatedAt": "2024-05-29",
+                      "reservations": [
+                        {
+                          "id": "51157f6d-a553-4513-a01e-6e8468e84666",
+                          "date": "2024-10-27",
+                          "hour": "15:00:00",
+                          "reservationCode": "9db1e5d3-e6ca-4b24-80af-ab2f50396dea",
+                          "user": {
+                            "id": "d56b4269-6835-4d8e-83e2-21e77fd64393",
+                            "name": "Bernardo",
+                            "email": "bernarddodgvdalim@gmail.com",
+                            "password": "$2a$10$s7DydA98qUZFIOTGfa/m1eKX.mB1Ax/LXFZbJDo/RORnTD8zv.H/K",
+                            "admin": true,
+                            "createdAt": "2024-05-29",
+                            "updatedAt": "2024-05-29",
+                            "deletedAt": null
+                          }
+                        },
+                        {
+                          "id": "79a73d3c-8e1d-4ae0-a8c7-c8969a2aceb7",
+                          "date": "2024-10-27",
+                          "hour": "16:00:00",
+                          "reservationCode": "6571b473-647e-4af3-8bff-efc04eb37de5",
+                          "user": {
+                            "id": "d56b4269-6835-4d8e-83e2-21e77fd64393",
+                            "name": "Bernardo",
+                            "email": "bernarddodgvdalim@gmail.com",
+                            "password": "$2a$10$s7DydA98qUZFIOTGfa/m1eKX.mB1Ax/LXFZbJDo/RORnTD8zv.H/K",
+                            "admin": true,
+                            "createdAt": "2024-05-29",
+                            "updatedAt": "2024-05-29",
+                            "deletedAt": null
+                          }
+                        },
+                        {
+                          "id": "9be49099-ec06-4465-98aa-cbb6bbe7805c",
+                          "date": "2024-10-27",
+                          "hour": "17:00:00",
+                          "reservationCode": "1124c5b5-7128-43c0-b031-9be505819da1",
+                          "user": {
+                            "id": "d56b4269-6835-4d8e-83e2-21e77fd64393",
+                            "name": "Bernardo",
+                            "email": "bernarddodgvdalim@gmail.com",
+                            "password": "$2a$10$s7DydA98qUZFIOTGfa/m1eKX.mB1Ax/LXFZbJDo/RORnTD8zv.H/K",
+                            "admin": true,
+                            "createdAt": "2024-05-29",
+                            "updatedAt": "2024-05-29",
+                            "deletedAt": null
+                          }
+                        },
+                        {
+                          "id": "c5000672-5e95-4067-8970-8c7aac599829",
+                          "date": "2024-10-27",
+                          "hour": "18:00:00",
+                          "reservationCode": "943b845c-f831-4e98-816a-c9380bd0e905",
+                          "user": {
+                            "id": "d56b4269-6835-4d8e-83e2-21e77fd64393",
+                            "name": "Bernardo",
+                            "email": "bernarddodgvdalim@gmail.com",
+                            "password": "$2a$10$s7DydA98qUZFIOTGfa/m1eKX.mB1Ax/LXFZbJDo/RORnTD8zv.H/K",
+                            "admin": true,
+                            "createdAt": "2024-05-29",
+                            "updatedAt": "2024-05-29",
+                            "deletedAt": null
+                          }
+                        },
+                        {
+                          "id": "f6dc45f0-41a1-4222-802c-ee204ddef6e2",
+                          "date": "2024-10-27",
+                          "hour": "18:30:00",
+                          "reservationCode": "3b450bb7-040c-4047-aeb8-03ea86249553",
+                          "user": {
+                            "id": "d56b4269-6835-4d8e-83e2-21e77fd64393",
+                            "name": "Bernardo",
+                            "email": "bernarddodgvdalim@gmail.com",
+                            "password": "$2a$10$s7DydA98qUZFIOTGfa/m1eKX.mB1Ax/LXFZbJDo/RORnTD8zv.H/K",
+                            "admin": true,
+                            "createdAt": "2024-05-29",
+                            "updatedAt": "2024-05-29",
+                            "deletedAt": null
+                          }
+                        }
+                      ],
+                      "director": {
+                        "id": "3466328a-a90e-4d7f-b286-c3af408659bb",
+                        "name": "Tarantino",
+                        "biograpy": "Biografia do Tarantino",
+                        "nationality": "Italia"
+                      },
+                      "genre": {
+                        "id": "6868f4e6-dc0c-4847-8bc7-f73cbfc53df7",
+                        "name": "action"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "NotFoundError": {
+                    "value": {
+                      "message": "Movie not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingTokenError": {
+                    "value": {
+                      "message": "Missing Bearer Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": ["read:reservation"]
+          }
+        ]
+      }
+    },
+    "/reservation": {
+      "post": {
+        "description": "Rota responsável por criar uma reserva para assistir o filme no cinema privativo",
+        "tags": ["Rotas sem parâmetros"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createReservationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/createMovieResponse"
+                },
+                "examples": {
+                  "movie": {
+                    "value": {
+                      "message": "Reservation created"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "bodyValidationError": {
+                    "value": {
+                      "message": {
+                        "hour": ["Required"]
+                      }
+                    }
+                  },
+                  "futureReleaseError": {
+                    "value": {
+                      "message": "The movie release cannot be in the future"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "NotFoundError": {
+                    "value": {
+                      "message": "Movie not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingTokenError": {
+                    "value": {
+                      "message": "Missing Bearer Token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "movieReservationConflictError": {
+                    "value": {
+                      "message": "Reservation to this movie at this date and time already exists"
+                    }
+                  },
+                  "userReservationConflictError": {
+                    "value": {
+                      "message": "User Reservation at this time and date already exists"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "security": [
+          {
+            "JWT": ["create:movie"]
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -1658,18 +1934,13 @@
       "updateMovieRequest": {
         "type": "object",
         "properties": {
-          "title": {
-            "type": "string",
-            "minLength": 3,
-            "maxLength": 255
+          "hour": {
+            "type": "string"
           },
-          "description": {
-            "type": "string",
-            "format": "email",
-            "minLength": 3,
-            "maxLength": 45
+          "date": {
+            "type": "string"
           },
-          "year": {
+          "movieId": {
             "type": "boolean"
           },
           "director": {
@@ -1682,6 +1953,26 @@
           "title": "Vingadores Atualizado"
         },
         "required": ["name", "email", "password"]
+      },
+      "createReservationRequest": {
+        "type": "object",
+        "properties": {
+          "hour": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "movieId": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "hour": "18:30",
+          "date": "2024-10-27",
+          "movieId": "133e1d59-290e-4382-939c-96e6af4e014e"
+        },
+        "required": ["hour", "date", "movieId"]
       }
     }
   },
