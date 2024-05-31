@@ -1,7 +1,13 @@
 import Movie from "../entities/Movie.entity";
 import User from "../entities/User.entity";
 import AppError from "../errors/App.error";
-import { TCreateReservationRequest } from "../interfaces/reservation.interface";
+import { TcreateMovieResponse } from "../interfaces/movie.interface";
+import {
+  TCreateReservationRequest,
+  TReadUserByMovieReservation,
+  TReservationResponse,
+} from "../interfaces/reservation.interface";
+import { TcreateUserResponse } from "../interfaces/user.interface";
 import { movieRepo, reservationRepo, userRepo } from "../repositories";
 
 export const createReservationService = async (
@@ -23,7 +29,6 @@ export const createReservationService = async (
       400
     );
 
-  console.log("Finding movie with ID:", bodyRequest.movieId);
   const movie: Movie | null = await movieRepo.findOneBy({
     id: bodyRequest.movieId,
   });
@@ -31,7 +36,6 @@ export const createReservationService = async (
   const user: User | null = await userRepo.findOneBy({
     id: userId,
   });
-  console.log("Finding user with ID:", userId);
 
   await reservationRepo.save({
     ...bodyRequest,
@@ -40,10 +44,8 @@ export const createReservationService = async (
   });
 };
 
-export const readAllReservationsByMovieService = async (
-  id: string
-): Promise<Movie> => {
-  const movie: Movie | null = await movieRepo.findOne({
+export const readAllReservationsByMovieService = async (id: string) => {
+  const movie: any = await movieRepo.findOne({
     where: {
       id: id,
     },
@@ -55,8 +57,23 @@ export const readAllReservationsByMovieService = async (
       genre: true,
     },
   });
+  console.log(movie);
 
   if (!movie) throw new AppError("Movie not found", 404);
+
+  movie.reservations = movie.reservations.map(
+    (reservation: TReadUserByMovieReservation) => {
+      if (reservation.user) {
+        const { password, ...userWithoutPassword } = reservation.user;
+        return {
+          ...reservation,
+          user: userWithoutPassword,
+        };
+      }
+
+      return reservation;
+    }
+  );
 
   return movie;
 };

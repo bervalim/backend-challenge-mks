@@ -8,6 +8,7 @@ import {
 } from "../interfaces/user.interface";
 import User from "../entities/User.entity";
 import { userRepo } from "../repositories";
+// import { getRedis, setRedis } from "../redisConfig";
 
 export const userLoginService = async (
   requestBody: TuserLoginRequest
@@ -19,6 +20,8 @@ export const userLoginService = async (
   const findUser: User | null = await userRepo.findOneBy({
     email: email,
   });
+  // const userRedis = await getRedis(`user-${findUser?.id}`);
+  // const user = JSON.parse(userRedis as any);
 
   if (!findUser) throw new AppError("Invalid credentials", 401);
 
@@ -31,6 +34,8 @@ export const userLoginService = async (
     process.env.SECRET_KEY!,
     { subject: findUser.id, expiresIn: process.env.EXPIRES_IN! }
   );
+
+  // await setRedis(`user-${user.id}`, JSON.stringify(user));
 
   return { token };
 };
