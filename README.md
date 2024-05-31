@@ -63,4 +63,5 @@ Clone o reposítório de forma local
 <li>Utilize o comando npm install para instalar todas as dependências</li>
 <li>Utilize o comando npm run typeorm migration:run -- -d ./src/data-source para rodar as migrações </li>
 <li>Para rodar o servidor, utilize o npm run dev</li>
+<li>Para um melhor entendimento a respeito da API e de cada rota, acesse a documentação em: https://backend-challenge-mks-h3l5.onrender.com/api-documentation/ </li>
 </ul> 
